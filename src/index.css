@@ -2,41 +2,62 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Cardiogram ECG App Design System - Purple themed with medical aesthetics */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    /* Main backgrounds */
+    --background: 251 100% 98%;
     --foreground: 222.2 84% 4.9%;
 
+    /* Card and surface colors */
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
 
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary purple theme */
+    --primary: 266 67% 35%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 266 67% 45%;
+    --primary-lighter: 266 67% 85%;
+    --primary-dark: 266 67% 25%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary and accent colors */
+    --secondary: 266 25% 95%;
+    --secondary-foreground: 266 67% 35%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 220 13% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 266 25% 95%;
+    --accent-foreground: 266 67% 35%;
 
+    /* Status colors */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* UI elements */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 266 67% 35%;
 
-    --radius: 0.5rem;
+    /* Custom gradients for Cardiogram */
+    --gradient-primary: linear-gradient(135deg, hsl(266 67% 35%) 0%, hsl(266 67% 45%) 100%);
+    --gradient-light: linear-gradient(135deg, hsl(266 25% 95%) 0%, hsl(251 100% 98%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(266 67% 35%) 0%, hsl(290 67% 45%) 50%, hsl(266 67% 35%) 100%);
+    
+    /* Shadows */
+    --shadow-card: 0 2px 8px -2px hsl(266 67% 35% / 0.1);
+    --shadow-button: 0 4px 12px -2px hsl(266 67% 35% / 0.2);
+    
+    /* Border radius */
+    --radius: 16px;
 
     --sidebar-background: 0 0% 98%;
 
@@ -55,7 +76,7 @@ All colors MUST be HSL.
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  .dark {
+    /* Dark mode styles for the ECG app */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
@@ -65,8 +86,11 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 266 67% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 266 67% 65%;
+    --primary-lighter: 266 30% 25%;
+    --primary-dark: 266 67% 45%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -77,21 +101,20 @@ All colors MUST be HSL.
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
 
+    --success: 142 76% 46%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 60%;
+    --warning-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
+    --ring: 266 67% 55%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(266 67% 45%) 0%, hsl(266 67% 55%) 100%);
+    --gradient-light: linear-gradient(135deg, hsl(217.2 32.6% 17.5%) 0%, hsl(222.2 84% 4.9%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(266 67% 45%) 0%, hsl(290 67% 55%) 50%, hsl(266 67% 45%) 100%);
 }
 
 @layer base {
@@ -100,6 +123,42 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    /* Mobile-first responsive design */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Mobile viewport adjustments */
+  html {
+    touch-action: manipulation;
+  }
+
+  /* Ensure proper mobile scrolling */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar for webkit browsers */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary-light rounded-full;
+  }
+
+  /* Focus styles for accessibility */
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    @apply ring-2 ring-primary ring-offset-2;
   }
 }
