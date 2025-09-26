@@ -14,7 +14,128 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ecg_reports: {
+        Row: {
+          abnormalities: string[] | null
+          created_at: string
+          doctor_notes: string | null
+          duration: number
+          heart_rate: number | null
+          id: string
+          patient_id: string
+          patient_summary: string | null
+          raw_data: Json | null
+          rhythm_analysis: string | null
+          risk_level: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          abnormalities?: string[] | null
+          created_at?: string
+          doctor_notes?: string | null
+          duration?: number
+          heart_rate?: number | null
+          id?: string
+          patient_id: string
+          patient_summary?: string | null
+          raw_data?: Json | null
+          rhythm_analysis?: string | null
+          risk_level?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          abnormalities?: string[] | null
+          created_at?: string
+          doctor_notes?: string | null
+          duration?: number
+          heart_rate?: number | null
+          id?: string
+          patient_id?: string
+          patient_summary?: string | null
+          raw_data?: Json | null
+          rhythm_analysis?: string | null
+          risk_level?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ecg_reports_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      patients: {
+        Row: {
+          age: number
+          created_at: string
+          gender: string
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age: number
+          created_at?: string
+          gender: string
+          id?: string
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number
+          created_at?: string
+          gender?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age?: number | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

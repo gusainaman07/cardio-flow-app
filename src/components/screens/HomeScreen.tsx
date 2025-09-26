@@ -2,13 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart, ChevronDown, CheckCircle2, Smartphone, Battery, Bluetooth } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 interface HomeScreenProps {
-  username: string;
   onStartECG: () => void;
 }
 
-const HomeScreen = ({ username, onStartECG }: HomeScreenProps) => {
+const HomeScreen = ({ onStartECG }: HomeScreenProps) => {
+  const { user } = useAuth();
+  
+  const getUserName = () => {
+    if (!user) return 'User';
+    // Extract name from user profile or email
+    return user.user_metadata?.full_name || user.email?.split('@')[0] || 'User';
+  };
   const [showGuide, setShowGuide] = useState(false);
 
   return (
@@ -17,7 +24,7 @@ const HomeScreen = ({ username, onStartECG }: HomeScreenProps) => {
         {/* Welcome Header */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-foreground mb-1">
-            Welcome back, {username}! 👋
+            Welcome back, {getUserName()}! 👋
           </h1>
           <p className="text-muted-foreground">How are you feeling today?</p>
         </div>

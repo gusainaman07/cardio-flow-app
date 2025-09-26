@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import Navigation from "@/components/Navigation";
 import LoginScreen from "@/components/screens/LoginScreen";
 import HomeScreen from "@/components/screens/HomeScreen";
@@ -14,24 +15,10 @@ const queryClient = new QueryClient();
 
 type Screen = "login" | "home" | "ecg" | "reports" | "profile";
 
-const App = () => {
-  const [currentScreen, setCurrentScreen] = useState<Screen>("login");
+const AppContent = () => {
+  const { user, loading } = useAuth();
+  const [currentScreen, setCurrentScreen] = useState<Screen>("home");
   const [activeTab, setActiveTab] = useState("home");
-  const [user, setUser] = useState<{ email: string; name: string } | null>(null);
-
-  const handleLogin = (email: string, password: string) => {
-    // Simulate login - in real app this would call Firebase Auth
-    const name = email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-    setUser({ email, name });
-    setCurrentScreen("home");
-    setActiveTab("home");
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-    setCurrentScreen("login");
-    setActiveTab("home");
-  };
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -53,34 +40,53 @@ const App = () => {
     setActiveTab("home");
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 bg-primary rounded-full animate-pulse mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   const renderScreen = () => {
     if (!user) {
-      return <LoginScreen onLogin={handleLogin} />;
+      return <LoginScreen />;
     }
 
     switch (currentScreen) {
       case "home":
-        return <HomeScreen username={user.name} onStartECG={handleStartECG} />;
+        return <HomeScreen onStartECG={handleStartECG} />;
       case "ecg":
         return <ECGRecordingScreen onComplete={handleECGComplete} onCancel={handleECGCancel} />;
       case "reports":
         return <ReportsScreen onStartRecording={handleStartECG} />;
       case "profile":
-        return <ProfileScreen username={user.name} email={user.email} onLogout={handleLogout} />;
+        return <ProfileScreen />;
       default:
-        return <HomeScreen username={user.name} onStartECG={handleStartECG} />;
+        return <HomeScreen onStartECG={handleStartECG} />;
     }
   };
 
   return (
+    <div className="min-h-screen bg-background">
+      {renderScreen()}
+      {user && (
+        <Navigation activeTab={activeTab} onTabChange={handleTabChange} />
+      )}
+    </div>
+  );
+};
+
+const App = () => {
+  return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="min-h-screen bg-background">
-          {renderScreen()}
-          {user && (
-            <Navigation activeTab={activeTab} onTabChange={handleTabChange} />
-          )}
-        </div>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
         <Toaster />
         <Sonner />
       </TooltipProvider>
